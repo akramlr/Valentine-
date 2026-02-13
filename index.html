@@ -3,78 +3,96 @@
 <head>
 <meta charset="UTF-8">
 <title>💘 Valentine 💘</title>
+
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        text-align: center;
-        background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-        height: 100vh;
-        margin: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
 
-    .box {
-        background: white;
-        padding: 25px;
-        border-radius: 15px;
-        width: 90%;
-        max-width: 400px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        position: relative;
-    }
+.box {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
 
-    h1, h2 {
-        color: #ff4d6d;
-    }
+h1, h2 {
+    color: #ff4d6d;
+}
 
-    button {
-        padding: 12px 24px;
-        margin: 10px;
-        font-size: 18px;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-    }
+.buttons {
+    margin-top: 20px;
+}
 
-    #yes {
-        background: #ff4d6d;
-        color: white;
-        transition: transform 0.3s;
-    }
+button {
+    border: none;
+    border-radius: 12px;
+    padding: 14px 26px;
+    font-size: 18px;
+    margin: 10px;
+}
 
-    #no {
-        background: #ccc;
-        position: absolute;
-    }
+#yes {
+    background: #ff4d6d;
+    color: white;
+    font-size: 24px;
+    transform: scale(1.3);
+    cursor: pointer;
+}
 
-    .hidden {
-        display: none;
-    }
+#no {
+    background: #ccc;
+    color: #666;
+    cursor: not-allowed;
+}
 
-    .options label {
-        display: block;
-        text-align: left;
-        margin: 6px 0;
-    }
+.hidden {
+    display: none;
+}
 
-    input[type="text"], input[type="date"] {
-        width: 90%;
-        padding: 8px;
-        margin-top: 10px;
-    }
+.options label {
+    display: block;
+    text-align: left;
+    margin: 6px 0;
+}
+
+input[type="date"], input[type="text"] {
+    width: 90%;
+    padding: 8px;
+    margin-top: 10px;
+}
 </style>
 </head>
 
 <body>
 
+<!-- STEP 1 -->
 <div class="box" id="step1">
     <h1>💖 Will you be my Valentine? 💖</h1>
-    <button id="yes" onclick="yesClicked()">YES 💕</button>
-    <button id="no">NO 💔</button>
+
+    <div class="buttons">
+        <button id="yes" onclick="yesClicked()">YES 💕</button>
+        <button id="no" disabled>NO 💔</button>
+    </div>
 </div>
 
+<!-- FINAL MESSAGE -->
+<div class="box hidden" id="finalMsg">
+    <h1>😌❤️</h1>
+    <h2>hehe kayhsablik no is an option</h2>
+    <button onclick="goToDate()">Continue ➡️</button>
+</div>
+
+<!-- STEP 2 -->
 <div class="box hidden" id="step2">
     <h2>When are you available? 📅</h2>
     <input type="date">
@@ -82,8 +100,10 @@
     <button onclick="nextStep()">Next ➡️</button>
 </div>
 
+<!-- STEP 3 -->
 <div class="box hidden" id="step3">
     <h2>Where should we go? 🥰</h2>
+
     <div class="options">
         <label><input type="checkbox"> 🍣 Sushi</label>
         <label><input type="checkbox"> 🍔 Burger</label>
@@ -92,38 +112,18 @@
         <label><input type="checkbox"> 🚶 Walking together</label>
     </div>
 
-    <input type="text" placeholder="Or type your own idea 💡">
+    <input type="text" placeholder="Your own idea 💡">
     <h2>Can’t wait to see you ❤️</h2>
 </div>
 
 <script>
-let noTries = 0;
-let yesSize = 1;
-
-const noBtn = document.getElementById("no");
-const yesBtn = document.getElementById("yes");
-
-function moveNo() {
-    noTries++;
-
-    if (noTries >= 5) {
-        noBtn.style.display = "none";
-        yesBtn.style.transform = "scale(3)";
-        return;
-    }
-
-    const x = Math.random() * (window.innerWidth - 120);
-    const y = Math.random() * (window.innerHeight - 80);
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
-}
-
-// works for mouse + mobile
-noBtn.addEventListener("mouseover", moveNo);
-noBtn.addEventListener("touchstart", moveNo);
-
 function yesClicked() {
     document.getElementById("step1").classList.add("hidden");
+    document.getElementById("finalMsg").classList.remove("hidden");
+}
+
+function goToDate() {
+    document.getElementById("finalMsg").classList.add("hidden");
     document.getElementById("step2").classList.remove("hidden");
 }
 
