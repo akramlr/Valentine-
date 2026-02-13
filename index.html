@@ -30,9 +30,9 @@
     }
 
     button {
-        padding: 10px 20px;
+        padding: 12px 24px;
         margin: 10px;
-        font-size: 16px;
+        font-size: 18px;
         border: none;
         border-radius: 10px;
         cursor: pointer;
@@ -56,7 +56,7 @@
     .options label {
         display: block;
         text-align: left;
-        margin: 5px 0;
+        margin: 6px 0;
     }
 
     input[type="text"], input[type="date"] {
@@ -72,7 +72,7 @@
 <div class="box" id="step1">
     <h1>💖 Will you be my Valentine? 💖</h1>
     <button id="yes" onclick="yesClicked()">YES 💕</button>
-    <button id="no" onclick="noClicked()" onmouseover="moveNo()">NO 💔</button>
+    <button id="no">NO 💔</button>
 </div>
 
 <div class="box hidden" id="step2">
@@ -93,31 +93,34 @@
     </div>
 
     <input type="text" placeholder="Or type your own idea 💡">
-    <br><br>
     <h2>Can’t wait to see you ❤️</h2>
 </div>
 
 <script>
+let noTries = 0;
 let yesSize = 1;
-let noCount = 0;
+
+const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
 
 function moveNo() {
-    const no = document.getElementById("no");
-    const x = Math.random() * (window.innerWidth - 100);
-    const y = Math.random() * (window.innerHeight - 50);
-    no.style.left = x + "px";
-    no.style.top = y + "px";
-}
+    noTries++;
 
-function noClicked() {
-    noCount++;
-
-    if (noCount >= 5) {
-        document.getElementById("no").style.display = "none";
-        yesSize = 3;
-        document.getElementById("yes").style.transform = `scale(${yesSize})`;
+    if (noTries >= 5) {
+        noBtn.style.display = "none";
+        yesBtn.style.transform = "scale(3)";
+        return;
     }
+
+    const x = Math.random() * (window.innerWidth - 120);
+    const y = Math.random() * (window.innerHeight - 80);
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
 }
+
+// works for mouse + mobile
+noBtn.addEventListener("mouseover", moveNo);
+noBtn.addEventListener("touchstart", moveNo);
 
 function yesClicked() {
     document.getElementById("step1").classList.add("hidden");
