@@ -93,6 +93,17 @@ input[type="date"], input[type="text"] {
     0% {transform: translateY(-50px);}
     100% {transform: translateY(100vh);}
 }
+
+/* Pulse animation for Kanbgheeek text */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(2); }
+    100% { transform: scale(1); }
+}
+
+#finalText {
+    animation: pulse 2s infinite;
+}
 </style>
 </head>
 <body>
@@ -129,9 +140,9 @@ input[type="date"], input[type="text"] {
     <button id="nextBtn" onclick="submitAnswers()">Next ➡️</button>
 </div>
 
-<!-- STEP 3: Final message with flowers -->
+<!-- STEP 3: Final message with pulsing text and flowers -->
 <div class="box hidden" id="step3">
-    <h1>💖 Kanbgheeek 7biba 💖</h1>
+    <h1 id="finalText">💖 Kanbgheeek 7biba 💖</h1>
 </div>
 
 <script>
@@ -168,7 +179,6 @@ function submitAnswers() {
     form.method = "POST";
     form.target = "_blank";
 
-    // Add fields
     const input1 = document.createElement("input");
     input1.type = "hidden";
     input1.name = "Date";
@@ -194,7 +204,7 @@ function showFlowers() {
     document.getElementById("step3").classList.remove("hidden");
 
     const colors = ["🌸","🌼","🌹"];
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 50; i++) {
         const f = document.createElement("div");
         f.className = "flower";
         f.innerText = colors[Math.floor(Math.random() * colors.length)];
