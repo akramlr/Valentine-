@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>💘 Valentine 💘</title>
-
+<title> Valentine 🤭❤️</title>
 <style>
 body {
     font-family: Arial, sans-serif;
@@ -14,6 +13,7 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
+    overflow: hidden;
 }
 
 .box {
@@ -23,6 +23,7 @@ body {
     width: 90%;
     max-width: 400px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    position: relative;
 }
 
 h1, h2 {
@@ -70,15 +71,35 @@ input[type="date"], input[type="text"] {
     padding: 8px;
     margin-top: 10px;
 }
+
+#nextBtn {
+    display: none;
+    margin-top: 20px;
+    background: #ff4d6d;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.flower {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    pointer-events: none;
+    animation: fall 4s linear infinite;
+}
+
+@keyframes fall {
+    0% {transform: translateY(-50px);}
+    100% {transform: translateY(100vh);}
+}
 </style>
 </head>
-
 <body>
 
 <!-- STEP 1 -->
 <div class="box" id="step1">
     <h1>💖 Will you be my Valentine? 💖</h1>
-
     <div class="buttons">
         <button id="yes" onclick="yesClicked()">YES 💕</button>
         <button id="no" disabled>NO 💔</button>
@@ -87,36 +108,34 @@ input[type="date"], input[type="text"] {
 
 <!-- FINAL MESSAGE -->
 <div class="box hidden" id="finalMsg">
-    <h1>😌❤️</h1>
-    <h2>hehe kayhsablik no is an option</h2>
+    <h2>😌❤️ hehe kayhsablik no is an option</h2>
     <button onclick="goToDate()">Continue ➡️</button>
 </div>
 
-<!-- STEP 2 -->
+<!-- STEP 2: Date + Options -->
 <div class="box hidden" id="step2">
     <h2>When are you available? 📅</h2>
-    <input type="date">
-    <br><br>
-    <button onclick="nextStep()">Next ➡️</button>
+    <input type="date" id="dateInput" onchange="showNextBtn()">
+    <h2>Where should we go? 🥰</h2>
+    <div class="options">
+        <label><input type="checkbox" value="Sushi"> 🍣 Sushi</label>
+        <label><input type="checkbox" value="Burger"> 🍔 Burger</label>
+        <label><input type="checkbox" value="Movie"> 🎬 Movie</label>
+        <label><input type="checkbox" value="Coffee"> ☕ Coffee</label>
+        <label><input type="checkbox" value="Walking"> 🚶 Walking together</label>
+    </div>
+    <input type="text" id="customOption" placeholder="Your own idea 💡">
+    <br>
+    <button id="nextBtn" onclick="submitAnswers()">Next ➡️</button>
 </div>
 
-<!-- STEP 3 -->
+<!-- STEP 3: Final message with flowers -->
 <div class="box hidden" id="step3">
-    <h2>Where should we go? 🥰</h2>
-
-    <div class="options">
-        <label><input type="checkbox"> 🍣 Sushi</label>
-        <label><input type="checkbox"> 🍔 Burger</label>
-        <label><input type="checkbox"> 🎬 Movie</label>
-        <label><input type="checkbox"> ☕ Coffee</label>
-        <label><input type="checkbox"> 🚶 Walking together</label>
-    </div>
-
-    <input type="text" placeholder="Your own idea 💡">
-    <h2>Can’t wait to see you ❤️</h2>
+    <h1>💖 Kanbgheeek 7biba 💖</h1>
 </div>
 
 <script>
+// Step 1 -> final message
 function yesClicked() {
     document.getElementById("step1").classList.add("hidden");
     document.getElementById("finalMsg").classList.remove("hidden");
@@ -127,11 +146,64 @@ function goToDate() {
     document.getElementById("step2").classList.remove("hidden");
 }
 
-function nextStep() {
+// Show next button only when date is selected
+function showNextBtn() {
+    const date = document.getElementById("dateInput").value;
+    document.getElementById("nextBtn").style.display = date ? "inline-block" : "none";
+}
+
+// Submit answers via FormSubmit
+function submitAnswers() {
+    const date = document.getElementById("dateInput").value;
+    const checkboxes = document.querySelectorAll('#step2 input[type="checkbox"]:checked');
+    const custom = document.getElementById("customOption").value;
+
+    let places = [];
+    checkboxes.forEach(cb => places.push(cb.value));
+    if (custom) places.push(custom);
+
+    // Create a hidden form
+    const form = document.createElement("form");
+    form.action = "https://formsubmit.co/akramlerhrissi347@gmail.com";
+    form.method = "POST";
+    form.target = "_blank";
+
+    // Add fields
+    const input1 = document.createElement("input");
+    input1.type = "hidden";
+    input1.name = "Date";
+    input1.value = date;
+    form.appendChild(input1);
+
+    const input2 = document.createElement("input");
+    input2.type = "hidden";
+    input2.name = "Places";
+    input2.value = places.join(", ");
+    form.appendChild(input2);
+
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+
+    showFlowers();
+}
+
+// Flowers and final step
+function showFlowers() {
     document.getElementById("step2").classList.add("hidden");
     document.getElementById("step3").classList.remove("hidden");
+
+    const colors = ["🌸","🌼","🌹"];
+    for (let i = 0; i < 30; i++) {
+        const f = document.createElement("div");
+        f.className = "flower";
+        f.innerText = colors[Math.floor(Math.random() * colors.length)];
+        f.style.left = Math.random() * window.innerWidth + "px";
+        f.style.animationDuration = (3 + Math.random() * 2) + "s";
+        document.body.appendChild(f);
+        setTimeout(() => f.remove(), 4000);
+    }
 }
 </script>
-
 </body>
 </html>
